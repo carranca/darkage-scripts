@@ -9,9 +9,14 @@ do
 	MODIFIED_TIME=${!FILENAME}
 	FILENAME=$FILENAME.rar
 	echo "Fetching $FILENAME, last fetched $MODIFIED_TIME"
-	curl -s -o $FILENAME -z "$MODIFIED_TIME" http://www.darkagerp.com/release/$FILENAME
+	SERVER_MODIFIED_TIME=`curl -s -i -D /dev/stdout -o $FILENAME -z "$MODIFIED_TIME" http://www.darkagerp.com/release/$FILENAME | tr -d '\r' | sed -En 's/^Last-Modified: (.*)/\1/p'`
+	if [ -z "$SERVER_MODIFIED_TIME" ]; then
+		echo "The local file is up to date."	
+	else
+		echo "Found a newer file, last modified $SERVER_MODIFIED_TIME"
+	fi
 
-	if [ -e $FILENAME ]
+	if [ -e $FILENAME ];
 	then
 		if ! hash unrar 2>/dev/null; then
 			echo 'Installing unrar dependency'
