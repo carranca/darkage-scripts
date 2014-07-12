@@ -1,4 +1,6 @@
 #!/usr/local/bin/bash
+#TODO: Actually read the server-side modified time from the variable in the config file (and get rid of MODIFIED_TIMES)
+#TODO: Get the modified time from the CURL call and save it to the config file (http://stackoverflow.com/questions/2464760/modify-config-file-using-bash-script)
 
 FILES=( 'login'  )
 source da_update.cfg
